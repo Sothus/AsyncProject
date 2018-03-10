@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from homepage import views
+from auctionhouse import views
 
 urlpatterns = [
     url(r'^$', views.home_page, name="home"),
