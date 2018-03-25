@@ -9,7 +9,7 @@ def ws_connect(message):
 		Group("auction").add(message.reply_channel)
 		message.reply_channel.send({
 			"text": "You're connected to group",
-		)}
+		})
 	else:
 		print("stranger!")
 
