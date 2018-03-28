@@ -18,7 +18,7 @@ from django.contrib import admin
 from auctionhouse import views
 
 urlpatterns = [
-    url(r'^$', views.home_page, name="home"),
+#    url(r'^$', views.home_page, name="home"),
     url(r'^admin/', admin.site.urls),
     url(r'^', include('auctionhouse.urls', namespace='shop')),
 ]
