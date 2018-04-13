@@ -24,6 +24,7 @@ def ws_message(message):
 		product = Product.objects.first()
 		product.price += decimal.Decimal(0.01)
 		product.save()
+		Group("auction").send({"text": "[VALUE_UP]" + str(product.price),})
 
 def ws_disconnect(message):
 	print("Someone left us")
