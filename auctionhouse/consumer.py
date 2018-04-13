@@ -1,4 +1,6 @@
 from channels import Group
+from .models import Product
+import decimal
 
 def ws_connect(message):
 	print("Someone connected")
@@ -17,7 +19,11 @@ def ws_connect(message):
 
 def ws_message(message):
 	print("Received!" + message['text'])
-
+	command = message['text']
+	if command == "bid_auction":
+		product = Product.objects.first()
+		product.price += decimal.Decimal(0.01)
+		product.save()
 
 def ws_disconnect(message):
 	print("Someone left us")

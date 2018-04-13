@@ -13,4 +13,9 @@ $(function() {
         console.log("Received Sock message!");
         console.log(message);
     };
+
+    $(document).on("mousedown", ".bid_auction", function(){
+      console.log("mousedown");
+      chatsock.send("bid_auction");
+    });
 });

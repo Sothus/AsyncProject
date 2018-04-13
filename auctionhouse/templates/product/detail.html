@@ -1,12 +1,28 @@
+{% extends "../base.html" %}
 {% load static %}
 
-elo
-<div id="auction">
+{% block title %}
+  {% if category %} {{ category.title }}{% else %}Products{% endif %}
+{% endblock %}
 
-</div>
+{% block content %}
+  <div class="product-detail">
+    <img src="{% if product.image %}{{ product.image.url }}{% else %}
+      {% static "img/no_image.png" %}{% endif %}">
+    <h1>{{ product.name }}</h1>
+    <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }} </a></h2>
+    <p class="price">${{ product.price }}</p>
+    {{ product.descritpion|linebreaks }}
+    <button id="steer_button" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-top bid_auction">
+      Licytuj
+    </button>
+  </div>
+{% endblock %}
 
+{% block scripts %}
 <script src='{% static "js/jquery-3.2.1.min.js" %}'></script>
 
 <script src='{% static "js/jquery-1.11.3.min.js" %}'></script>
 <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
 <script type="text/javascript" src='{% static "js/auction.js" %}'></script>
+{% endblock %}
