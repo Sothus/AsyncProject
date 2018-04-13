@@ -3,8 +3,8 @@ from channels import Group
 def ws_connect(message):
 	print("Someone connected")
 	path = message['path']
-
-	if path == b'/auction/':
+	print(path)
+	if path == '/dummy_auction/':
 		print("Adding new user to auction group")
 		Group("auction").add(message.reply_channel)
 		message.reply_channel.send({
