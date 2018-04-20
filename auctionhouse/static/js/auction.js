@@ -7,6 +7,7 @@ $(function() {
            console.log("Connected!");
            $('#auction').text("Connected!");
            chatsock.send("Connected!");
+           console.log(document.URL)
     };
 
     chatsock.onmessage = function(message) {

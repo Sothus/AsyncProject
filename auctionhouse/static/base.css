@@ -33,11 +33,6 @@ a.button.light {
     background:#ededed;
 }
 
-img {
-  width: 10%;
-  height: 10%;
-}
-
 .text-left {
     text-align:left;
 }
@@ -123,6 +118,12 @@ img {
 }
 
 .product-list .item img {
-    width:100%;
+    width:50%;
     margin-bottom:8px;
+}
+
+.product-detail img {
+    width:40%;
+    float:left;
+    padding:0 20px 20px 0;
 }

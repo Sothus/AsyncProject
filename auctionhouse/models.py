@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from datetime import date, timedelta
 
 class Category(models.Model):
     name = models.CharField(max_length=200,
@@ -30,6 +31,7 @@ class Product(models.Model):
                               blank=True)
     descritpion = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    ends = models.DateTimeField(auto_now_add=(date.today() + timedelta(days=7)))
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
