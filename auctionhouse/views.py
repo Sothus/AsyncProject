@@ -1,6 +1,7 @@
 from django.contrib.auth    import authenticate, login
-from django.shortcuts       import render, get_object_or_404
+from django.shortcuts       import render, get_object_or_404, redirect
 from django.http            import HttpResponse
+from django.urls            import reverse
 from .models                import Category, Product
 from .forms                 import LoginForm
 
@@ -37,8 +38,7 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse("Authenticated "\
-                                        "successfully")
+                    return redirect("/product_list/")
                 else:
                     return HttpResponse("Disabled account")
             else:
