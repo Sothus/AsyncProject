@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from datetime import date, timedelta
 
 class Category(models.Model):
@@ -32,6 +33,7 @@ class Product(models.Model):
     descritpion = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     ends = models.DateTimeField(auto_now_add=(date.today() + timedelta(days=7)))
+    current_bidder = models.ForeignKey(User, default=None, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

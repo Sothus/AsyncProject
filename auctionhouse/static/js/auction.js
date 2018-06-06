@@ -14,13 +14,15 @@ $(function() {
         console.log("Received Sock message!");
         console.log(message);
         console.log(jQuery.type(message));
-        console.log(message.data)
-        if(message.data.includes("[VALUE_UP]"))
-          {
-            var price = message.data.split("[VALUE_UP]")[1];
-            console.log(price)
-            $('.price').text("$" + parseFloat(price).toFixed(2));
-          }
+        console.log(message.data);
+        var message = jQuery.parseJSON(message.data);
+        console.log(message.action);
+        if(message.action == 'VALUE_UP')
+        {
+          console.log("trolololo");
+    			$('.price').text(message.user + " bids: " + parseFloat(message.value).toFixed(2) + "$");
+    		}
+
     };
 
     $(document).on("mousedown", ".bid_auction", function(){
