@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.product_list, name='product_list'),
+    url(r'^dashboard/$', views.dashboard, name='dashboard'),
     url(r'^product_list/$', views.product_list, name='product_list'),
     url(r'^login/$',
         auth_views.LoginView.as_view(   template_name="login.html",

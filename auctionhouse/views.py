@@ -1,9 +1,10 @@
-from django.contrib.auth    import authenticate, login
-from django.shortcuts       import render, get_object_or_404, redirect
-from django.http            import HttpResponse
-from django.urls            import reverse
-from .models                import Category, Product
-from .forms                 import LoginForm
+from django.contrib.auth                import authenticate, login
+from django.shortcuts                   import render, get_object_or_404, redirect
+from django.http                        import HttpResponse
+from django.urls                        import reverse
+from .models                            import Category, Product
+from .forms                             import LoginForm
+from django.contrib.auth.decorators     import login_required
 
 def home_page(request):
     return render(request, 'base.html')
@@ -46,3 +47,10 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, "login.html", {'form': form})
+
+
+@login_required
+def dashboard(request):
+    return render(request,
+                  'dashboard.html',
+                  {'section': 'dashboard'})
