@@ -21,6 +21,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
     category = models.ForeignKey(Category,
                                  related_name='products')
@@ -45,5 +46,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Biders(models.Model):
+    product = models.ForeignKey(Product)
+    users = models.ManyToManyField(User, null=True)
 
 # Create your models here.

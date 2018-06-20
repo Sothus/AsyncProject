@@ -103,8 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LOGIN_REDIRECT_URL  = reverse_lazy('shop:dashboard')
-LOGIN_URL           = reverse_lazy('login')
-LOGOUT_URL          = reverse_lazy('logout')
+LOGIN_URL           = reverse_lazy('shop:login')
+LOGOUT_URL          = reverse_lazy('shop:logout')
 
 
 # Internationalization
