@@ -1,7 +1,7 @@
 from channels import Group
 from channels.sessions import channel_session
 from channels.auth import channel_session_user, channel_session_user_from_http
-from .models import Product
+from .models import Product, Biders
 from django.contrib.auth.models import User
 import json
 import decimal
@@ -32,6 +32,7 @@ def ws_message(message):
 	if command == "bid_auction":
 		product = Product.objects.get(pk=product_id)
 		bidder = User.objects.get(username=message.user)
+		biders = Biders.object.get(product_pk=product_id)
 		product.price += decimal.Decimal(0.01)
 		product.current_bidder = bidder
 		product.save()
