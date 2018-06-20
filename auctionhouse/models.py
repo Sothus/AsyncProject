@@ -50,6 +50,6 @@ class Product(models.Model):
 
 class Biders(models.Model):
     product = models.ForeignKey(Product)
-    users = models.ManyToManyField(User, null=True)
+    users = models.ManyToManyField(User)
 
 # Create your models here.

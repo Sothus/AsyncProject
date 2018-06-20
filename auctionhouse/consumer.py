@@ -32,7 +32,10 @@ def ws_message(message):
 	if command == "bid_auction":
 		product = Product.objects.get(pk=product_id)
 		bidder = User.objects.get(username=message.user)
-		biders = Biders.object.get(product_pk=product_id)
+		#biders = Biders.objects.get(product_pk=product_id)
+		#is_user_bids = Biders.objects.filter(users_username=message.user).count()
+		#print(is_user_bids)
+		###
 		product.price += decimal.Decimal(0.01)
 		product.current_bidder = bidder
 		product.save()
