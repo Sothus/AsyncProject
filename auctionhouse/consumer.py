@@ -10,21 +10,29 @@ import decimal
 def ws_connect(message):
 	print("User: ", message.user)
 	print("Someone connected")
-	product_id, product_name = get_group(message)
-	try:
-		auction = Product.objects.get(pk=product_id)
-	except Product.DoesNotExist:
-		auction = None
-	if auction:
-		print("Adding new user to auction id -> " + str(product_id) + "; name -> " + product_name)
-		json_response = json.dumps({"action": "INFO", "user": message.user.username, "value": message.user.username + "connected to " + product_name + " auction group"})
-
-		Group(str(product_id)).add(message.reply_channel)
+	print(message['path'])
+	if 'dashboard' in message['path']:
+		print("added to dashboard user group")
+		Group("dashboard-%s" % message.user.username).add(message.reply_channel)
 		message.reply_channel.send({
-			"text": json_response,
+			"text": "connected to dashboard",
 		})
 	else:
-		print("stranger!")
+		product_id, product_name = get_group(message)
+		try:
+			auction = Product.objects.get(pk=product_id)
+		except Product.DoesNotExist:
+			auction = None
+		if auction:
+			print("Adding new user to auction id -> " + str(product_id) + "; name -> " + product_name)
+			json_response = json.dumps({"action": "INFO", "user": message.user.username, "value": message.user.username + "connected to " + product_name + " auction group"})
+
+			Group(str(product_id)).add(message.reply_channel)
+			message.reply_channel.send({
+				"text": json_response,
+			})
+		else:
+			print("stranger!")
 
 
 @channel_session_user
@@ -62,7 +70,24 @@ def ws_message(message):
 		elif bidder == None:
 			print("Not authorized bid!")
 	elif command == "get_user_bid_auctions":
-		pass
+		try:
+			user = User.objects.get(username=message.user)
+		except:
+			user = None
+
+		if user:
+			try:
+				auctions = Biders.objects.filter(users__username=message.user)
+			except Biders.DoesNotExist:
+				auctions = None
+
+			if auctions:
+				json_auctions = {'auctions': []}
+				for auction in auctions:
+					json_auctions['auctions'].append({"name":auction.product.name, "url":auction.product.get_absoulte_url()})
+				json_auctions = json.dumps(json_auctions)
+				print(auctions.count())
+				Group("dashboard-%s" % message.user.username).send({'text': json_auctions})
 		#is_user_bids = Biders.objects.filter(users_username=message.user).count()
 
 

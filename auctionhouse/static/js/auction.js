@@ -8,6 +8,7 @@ $(function() {
            $('#auction').text("Connected!");
            chatsock.send("Connected!");
            console.log(document.URL)
+           var intervalID = setInterval(send_request(), 5000);
     };
 
     chatsock.onmessage = function(message) {
@@ -22,7 +23,6 @@ $(function() {
           console.log("trolololo");
     			$('.price').text(message.user + " bids: " + parseFloat(message.value).toFixed(2) + "$");
     		}
-
     };
 
     $(document).on("mousedown", ".bid_auction", function(){
