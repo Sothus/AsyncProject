@@ -20,6 +20,16 @@ $(function() {
         console.log(jQuery.type(message));
         console.log(message.data);
         var message = jQuery.parseJSON(message.data);
+        var i;
+        var list_of_auctions = '<table class="table">';
+        list_of_auctions += '<tr><th>Produkt</th><th>URL</th></tr>'
+        for(i = 0; i < message.auctions.length; i++){
+          console.log(message.auctions[i]);
+          list_of_auctions += '<tr><td>'+ message.auctions[i].name + '</td><td>' + message.auctions[i].url + '</td></tr>'
+        }
+        list_of_auctions += "</table>";
+
+        $("#auctions").html(list_of_auctions);
 
 
     };
