@@ -11,7 +11,10 @@ def ws_connect(message):
 	print("User: ", message.user)
 	print("Someone connected")
 	product_id, product_name = get_group(message)
-	auction = Product.objects.get(pk=product_id)
+	try:
+		auction = Product.objects.get(pk=product_id)
+	except Product.DoesNotExist:
+		auction = None
 	if auction:
 		print("Adding new user to auction id -> " + str(product_id) + "; name -> " + product_name)
 		json_response = json.dumps({"action": "INFO", "user": message.user.username, "value": message.user.username + "connected to " + product_name + " auction group"})
@@ -30,17 +33,25 @@ def ws_message(message):
 	product_id, product_name = get_group(message)
 	command = message['text']
 	if command == "bid_auction":
-		product = Product.objects.get(pk=product_id)
-		bidder = User.objects.get(username=message.user)
+		try:
+			product = Product.objects.get(pk=product_id)
+			bidder = User.objects.get(username=message.user)
+		except Product.DoesNotExist:
+			product = None
+		except User.DoesNotExist:
+			bidder = None
 		#biders = Biders.objects.get(product_pk=product_id)
 		#is_user_bids = Biders.objects.filter(users_username=message.user).count()
 		#print(is_user_bids)
 		###
-		product.price += decimal.Decimal(0.01)
-		product.current_bidder = bidder
-		product.save()
-		json_response = json.dumps({"action": "VALUE_UP", "user": message.user.username, "value": str(product.price),})
-		Group(str(product_id)).send({"text": json_response,})
+		if product and bidder:
+			product.price += decimal.Decimal(0.01)
+			product.current_bidder = bidder
+			product.save()
+			json_response = json.dumps({"action": "VALUE_UP", "user": message.user.username, "value": str(product.price),})
+			Group(str(product_id)).send({"text": json_response,})
+		elif bidder == None:
+			print("Not authorized bid!")
 
 @channel_session_user
 def ws_disconnect(message):
