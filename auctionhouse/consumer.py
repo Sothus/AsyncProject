@@ -26,6 +26,7 @@ def ws_connect(message):
 	else:
 		print("stranger!")
 
+
 @channel_session_user
 def ws_message(message):
 	print("User: ", message.user)
@@ -36,15 +37,23 @@ def ws_message(message):
 		try:
 			product = Product.objects.get(pk=product_id)
 			bidder = User.objects.get(username=message.user)
+			is_user_bids = Biders.objects.filter(product_id=product_id,users__username=message.user).count()
+			print(is_user_bids)
 		except Product.DoesNotExist:
 			product = None
 		except User.DoesNotExist:
 			bidder = None
+		except Biders.DoesNotExist:
+			is_user_bids = None
 		#biders = Biders.objects.get(product_pk=product_id)
 		#is_user_bids = Biders.objects.filter(users_username=message.user).count()
 		#print(is_user_bids)
 		###
-		if product and bidder:
+		if product and bidder and is_user_bids is not None:
+			if is_user_bids == 0:
+				biders = Biders.objects.get(product_id=product_id)
+				biders.users.add(bidder)
+				biders.save()
 			product.price += decimal.Decimal(0.01)
 			product.current_bidder = bidder
 			product.save()
@@ -52,6 +61,10 @@ def ws_message(message):
 			Group(str(product_id)).send({"text": json_response,})
 		elif bidder == None:
 			print("Not authorized bid!")
+	elif command == "get_user_bid_auctions":
+		pass
+		#is_user_bids = Biders.objects.filter(users_username=message.user).count()
+
 
 @channel_session_user
 def ws_disconnect(message):
