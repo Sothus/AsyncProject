@@ -11,7 +11,7 @@ $(function() {
       console.log("Connected!");
       chatsock.send("Connected!");
       console.log(document.URL)
-      var intervalID = setInterval(send_request, 5000);
+      var intervalID = setInterval(send_request, 1000);
     };
 
     chatsock.onmessage = function(message) {
@@ -20,12 +20,21 @@ $(function() {
         console.log(jQuery.type(message));
         console.log(message.data);
         var message = jQuery.parseJSON(message.data);
-        var i;
+
         var list_of_auctions = '<table class="table">';
-        list_of_auctions += '<tr><th>Produkt</th><th>URL</th></tr>'
+        list_of_auctions += '<tr><th>Produkt</th><th>URL</th><th>Status</th></tr>';
+
+        var i;
         for(i = 0; i < message.auctions.length; i++){
-          console.log(message.auctions[i]);
-          list_of_auctions += '<tr><td>'+ message.auctions[i].name + '</td><td>' + message.auctions[i].url + '</td></tr>'
+          var ended;
+          if(message.auctions[i].ended == "True"){
+            ended = "Zakonczono";
+          }
+          else{
+            ended = "Trwa";
+          }
+          console.log('<a href="' + window.location.host +  message.auctions[i].url + '"</a>');
+          list_of_auctions += '<tr><td>'+ message.auctions[i].name + '</td><td><a href="' +  message.auctions[i].url + '">link</a></td><td>' + ended + '</td></tr>'
         }
         list_of_auctions += "</table>";
 

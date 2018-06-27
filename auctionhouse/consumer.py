@@ -5,6 +5,7 @@ from .models import Product, Biders
 from django.contrib.auth.models import User
 import json
 import decimal
+from django.utils import timezone
 
 @channel_session_user_from_http
 def ws_connect(message):
@@ -84,7 +85,10 @@ def ws_message(message):
 			if auctions:
 				json_auctions = {'auctions': []}
 				for auction in auctions:
-					json_auctions['auctions'].append({"name":auction.product.name, "url":auction.product.get_absoulte_url()})
+					ended = False
+					if (timezone.now() > auction.product.ends):
+						ended = True
+					json_auctions['auctions'].append({"name":auction.product.name, "url":auction.product.get_absoulte_url(), 'ended': str(ended)})
 				json_auctions = json.dumps(json_auctions)
 				print(auctions.count())
 				Group("dashboard-%s" % message.user.username).send({'text': json_auctions})

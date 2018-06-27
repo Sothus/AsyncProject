@@ -5,6 +5,7 @@ from django.urls                        import reverse
 from .models                            import Category, Product
 from .forms                             import LoginForm
 from django.contrib.auth.decorators     import login_required
+from django.utils                       import timezone
 
 def home_page(request):
     return render(request, 'base.html')
@@ -26,7 +27,11 @@ def product_list(request, category_slug=None):
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug)
-    return render(request, 'product/detail.html', {'product': product})
+    if timezone.now() > product.ends:
+        ended = True
+    else:
+        ended = False
+    return render(request, 'product/detail.html', {'product': product, 'ended': ended})
 
 
 def user_login(request):

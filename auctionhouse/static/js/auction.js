@@ -7,8 +7,7 @@ $(function() {
            console.log("Connected!");
            $('#auction').text("Connected!");
            chatsock.send("Connected!");
-           console.log(document.URL)
-           var intervalID = setInterval(send_request(), 5000);
+           console.log(document.URL);
     };
 
     chatsock.onmessage = function(message) {
