@@ -18,9 +18,14 @@
     <p>Wygral: {{ product.current_bidder }}
     {% else %}
     <p class="price">{{ product.current_bidder.username }} bids: {{ product.price }}$</p>
-    <button id="steer_button" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-top bid_auction">
-      Licytuj
-    </button>
+    {% if user.is_authenticated  %}
+      <button id="steer_button" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-top bid_auction">
+        Licytuj
+      </button>
+    {% else %}
+      <h4>Zaloguj sie aby licytowac!</h4>
+    {% endif %}
+
     {% endif %}
   </div>
 {% endblock %}

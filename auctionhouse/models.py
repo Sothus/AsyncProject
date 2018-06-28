@@ -48,10 +48,16 @@ class Product(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-
         super(Product, self).save(*args, **kwargs)
-        newBiders = Biders(product=self)
-        newBiders.save()
+        try:
+            biders = Biders.objects.get(product_id=self.pk)
+        except Biders.DoesNotExist:
+            biders = None
+        if biders:
+            pass
+        else:
+            newBiders = Biders(product=self)
+            newBiders.save()
 
 
 
